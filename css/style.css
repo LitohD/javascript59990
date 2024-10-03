@@ -4,8 +4,37 @@
     box-sizing: border-box;
 }
 
-h1{
-    font-size: 50px;
+.menu-bg{
+    background-color: rgb(0, 81, 255);
+}
+
+header nav div div ul{
+    font-size: 20px;
+    margin: 20px;
+}
+
+section h1{
     text-align: center;
-    color: red;
+    font-size: 50px;
+    margin: 30px;
+    color: blue;
+}
+
+section div{
+    width: 250px;
+    height: 200px;
+    border: 2px solid;
+    margin: 20px;
+    text-align: center;
+    margin: auto;
+}
+
+section div h2{
+    font-size: 25px;
+    margin-top: 10px;
+}
+
+section div button{
+    font-size: 20px;
+    margin: 40px;
 }
