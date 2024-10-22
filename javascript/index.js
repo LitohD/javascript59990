@@ -70,31 +70,53 @@ console.log(PRESTAMO3)
 
 //SECCION DE DISTINTOS TIPOS DE TARJETAS Y BENEFICIOS
 
-let productos = [
+const TARJETAS = [
 
     {
-        tarjeta: "verde",
+        id: 1,
+        nombre: "tarjeta verde",
         tipo: "debito",
         beneficios: "" // ESPACIO VACIO PARA PENSAR BIEN LA IDEA SOBRE LOS BENEFICIOS A OTORGAR
     },
 
     {
-        tarjeta: "azul",
+        id:2,
+        nombre: "tarjeta azul",
         tipo: "debito",
         beneficios: "" // ESPACIO VACIO PARA PENSAR BIEN LA IDEA SOBRE LOS BENEFICIOS A OTORGAR
     },
 
     {
-        tarjeta: "roja",
+        id:3,
+        nombre: "tarjeta roja",
         tipo: "credito",
         beneficios: "" // ESPACIO VACIO PARA PENSAR BIEN LA IDEA SOBRE LOS BENEFICIOS A OTORGAR
     },
 
     {
-        tarjeta: "negra",
+        id:4,
+        nombre: "tarjeta negra",
         tipo: "credito",
         beneficios: "" // ESPACIO VACIO PARA PENSAR BIEN LA IDEA SOBRE LOS BENEFICIOS A OTORGAR
     }
 ]
 
-console.log(productos)
+let solicitados = [];
+
+function mostrarTarjetas(){
+    const TARJETAS_SECTION = document.getElementById('prod-tarjetas');
+    TARJETAS.forEach(producto =>{
+        const TARJETA_DIV = document.createElement('div');
+        TARJETA_DIV.className = 'card-conteiner'
+        TARJETA_DIV.innerHTML =
+        `
+        <h3>${producto.nombre}</h3>
+        <p>${producto.tipo}</p>
+        <button onclick="solicitarTarjeta(${producto.id})">Solicitar</button>
+        
+        `
+        TARJETAS_SECTION.appendChild(TARJETA_DIV);
+    })
+}
+
+mostrarTarjetas()
