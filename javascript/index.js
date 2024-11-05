@@ -15,7 +15,7 @@ function calcularMonto(monto){
         return monto + (monto *0.30);//CALCULO DEL 30%
     } else if (monto <=20000){
         return monto + (monto *0.20);//CALCULO DEL 20%
-    } else (monto >=30001);{
+    } else if (monto >=30001);{
         return monto + (monto *0.10)//CALCULO DEL 10%
     }
 } 
