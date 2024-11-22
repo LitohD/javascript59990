@@ -1,0 +1,48 @@
+[
+
+    {
+        "id": 1,
+        "nombre": "tarjeta verde",
+        "tipo": "debito",
+        "beneficios": {
+            "descuentoSupermercados": "5% de descuento en supermercados seleccionados",
+            "cine2x1": "2X1 en cines Movie de lunes a jueves"
+        }
+    },
+
+    {
+        "id": 2,
+        "nombre": "tarjeta azul",
+        "tipo": "debito",
+        "beneficios": {
+            "descuentoSupermercados": "5% de descuento en supermercados seleccionados",
+            "cine2x1": "2X1 en cines Movie de lunes a jueves",
+            "puntosRegalo": "acumulación de 'puntos regalo' $500 = 1 punto"
+        }
+    },
+
+    {
+        "id": 3,
+        "nombre": "tarjeta roja",
+        "tipo": "credito",
+        "beneficios": {
+            "descuentoSupermercados": "10% de descuento en supermercados seleccionados",
+            "cine2x1": "2X1 en cines Movie todos los días",
+            "puntosRegalo": "acumulación de 'puntos regalo' $300 = 1 punto"
+        }
+    },
+
+    {
+        "id": 4,
+        "nombre": "tarjeta negra",
+        "tipo": "credito",
+        "beneficios": {
+            "descuentoSupermercados": "10% de descuento en supermercados seleccionados",
+            "cine2x1": "2X1 en cines Movie todos los días",
+            "puntosRegalo": "acumulación de 'puntos regalo' $100 = 1 punto",
+            "descuentoGasolineras": "10% de descuento en todas las gasolineras del país (máximo acumulable por mes $1000)",
+            "tasaPreferencial": "tasa preferencial en préstamos por buen pagador",
+            "sorteosSemanales": "participación en sorteos semanales de compra gratis"
+        }
+    }
+]

@@ -1,33 +1,57 @@
 
 // PIDIENDO DATOS PARA EL PRESTAMO 
-let edad = parseInt( prompt("Ingrese su edad"));
+(async () => {
+    const { value: formValues } = await Swal.fire({
+        title: "Multiple inputs",
+        html: `
+        <input id="swal-input1" class="swal2-input">
+        <input id="swal-input2" class="swal2-input">
+    `,
+        focusConfirm: false,
+        preConfirm: () => {
+            return [
+                document.getElementById("swal-input1").value,
+                document.getElementById("swal-input2").value
+            ];
+        }
+    });
+    if (formValues) {
+        Swal.fire(JSON.stringify(formValues));
+    }
+})()
 
-let clearing = true;
+// let habilitado = edad >= 18 ? 'Está habilitado a sacar un préstamo' : 'No está habilitado a sacar un préstamo';
+// console.log(habilitado)
 
-if (edad >= 18 && clearing === true){
-    console.log("Esta habilitado para sacar un prestamo")
-}else{
-    console.log("Usted no puede sacar un prestamo");
+
+
+
+function calcularMonto(monto) {
+    return monto <= 10000
+        ? monto + (monto * 0.30) // CALCULO DEL 30%
+        : monto <= 20000
+            ? monto + (monto * 0.20) // CALCULO DEL 20%
+            : monto + (monto * 0.10); // CALCULO DEL 10%
 }
 
-//FUNCION PARA CALCULAR INTERESES DEL PRESTAMO PERSONALIZADO
-function calcularMonto(monto){
-    if (monto <=15000){
-        return monto + (monto *0.30);//CALCULO DEL 30%
-    } else if (monto <=20000){
-        return monto + (monto *0.20);//CALCULO DEL 20%
-    } else if (monto >=30001);{
-        return monto + (monto *0.10)//CALCULO DEL 10%
-    }
-} 
-let monto = parseInt(prompt("ingrese monto a pedir"));
-if (isNaN(monto) || monto <=0){
-    console.log("Por favor, ingresar un monto válido");
-} else {
-    let montoFinal = calcularMonto(monto);
-    console.log("el monto a pagar es de $" + montoFinal)
-};
+function obtenerMontoUsuario() {
+    let monto = parseInt(prompt("Ingrese monto a pedir"));
+    return monto;
+}
 
+function esMontoValido(monto) {
+    return !isNaN(monto) && monto > 0;
+}
+
+function mostrarMensaje(mensaje) {
+    console.log(mensaje);
+}
+
+let monto = obtenerMontoUsuario();
+
+esMontoValido(monto)
+    ? mostrarMensaje("El monto a pagar es de $" + calcularMonto(monto))
+    : mostrarMensaje("Por favor, ingrese un monto válido.");
 
 //PRESTAMOS FIJOS
 class Prestamo {
@@ -71,64 +95,34 @@ console.log(PRESTAMO3)
 
 //SECCION DE DISTINTOS TIPOS DE TARJETAS Y BENEFICIOS
 
-const TARJETAS = [
-
-    {
-        id: 1,
-        nombre: "tarjeta verde",
-        tipo: "debito",
-        beneficios: {
-            descuentoSupermercados: "5% de descuento en supermercados seleccionados",
-            cine2x1: "2X1 en cines Movie de lunes a jueves",
-        }
-    },
-
-    {
-        id: 2,
-        nombre: "tarjeta azul",
-        tipo: "debito",
-        beneficios: {
-            descuentoSupermercados: "5% de descuento en supermercados seleccionados",
-            cine2x1: "2X1 en cines Movie de lunes a jueves",
-            puntosRegalo: "acumulación de 'puntos regalo' $500 = 1 punto", //"puntos regalo" es un sistema de acumulación de puntos, por cada $500 gastados sumas 1 "punto regalo (PR)". 1 PR = $1
-        }
-    },
-
-    {
-        id: 3,
-        nombre: "tarjeta roja",
-        tipo: "credito",
-        beneficios: {
-            descuentoSupermercados: "10% de descuento en supermercados seleccionados",
-            cine2x1: "2X1 en cines Movie todos los días",
-            puntosRegalo: "acumulación de 'puntos regalo' $300 = 1 punto", //"puntos regalo" es un sistema de acumulación de puntos, por cada $300 gastados sumas 1 "punto regalo (PR)". 1 PR = $1
-        }
-    },
-
-    {
-        id: 4,
-        nombre: "tarjeta negra",
-        tipo: "credito",
-        beneficios: {
-            descuentoSupermercados: "10% de descuento en supermercados seleccionados",
-            cine2x1: "2X1 en cines Movie todos los días",
-            puntosRegalo: "acumulación de 'puntos regalo' $100 = 1 punto", //"puntos regalo" es un sistema de acumulación de puntos, por cada $100 gastados sumas 1 "punto regalo (PR)". 1 PR = $1
-            descuentoGasolineras: "10% de descuento en todas las gasolineras del país (máximo acumulable por mes $1000)",
-            tasaPreferencial: "tasa preferencial en préstamos por buen pagador",
-            sorteosSemanales: "participación en sorteos semanales de compra gratis"
-        }
+async function miJson() {
+    const miJson = "../datos.json";
+    try {
+        const responseJson = await fetch(miJson);
+        const dataJson = await responseJson.json();
+        return dataJson;
+    } catch (error) {
+        console.log('hay un error');
+        return [];
     }
-]
-let tarjetasJson = JSON.stringify(TARJETAS);
-localStorage.setItem('TARJETAS', tarjetasJson);
+}
 
-let objetoJson = JSON.parse(localStorage.getItem("TARJETAS"));
-console.log(objetoJson);
+async function inicializar() {
+    const data = await miJson();
+    if (data.length > 0) {
+        localStorage.setItem('TARJETAS', JSON.stringify(data));
+        const objetoJson = JSON.parse(localStorage.getItem('TARJETAS'));
+        console.log(objetoJson);
+        mostrarTarjetas(objetoJson);
+    } else {
+        console.log('hay un error');
+    }
+}
 
-function mostrarTarjetas() {
+function mostrarTarjetas(tarjetas) {
     const TARJETAS_SECTION = document.getElementById('prod-tarjetas');
     TARJETAS_SECTION.innerHTML = '';
-    TARJETAS.forEach(producto => {
+    tarjetas.forEach(producto => {
         const TARJETA_DIV = document.createElement('div');
         TARJETA_DIV.className = 'card-container';
         TARJETA_DIV.innerHTML = `
@@ -140,11 +134,9 @@ function mostrarTarjetas() {
     });
 }
 
-mostrarTarjetas();
-
 function solicitarTarjeta(id) {
     let SOLICITAR = JSON.parse(localStorage.getItem('solicitar')) || [];
-    let tarjeta = TARJETAS.find(prod => prod.id === id);
+    let tarjeta = JSON.parse(localStorage.getItem('TARJETAS')).find(prod => prod.id === id);
     let TARJETA_SOLICITADA = SOLICITAR.find(prod => prod.id === id);
 
     if (TARJETA_SOLICITADA) {
@@ -182,6 +174,6 @@ function mostrarSolicitados() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    mostrarTarjetas();
-    mostrarSolicitados();
+    inicializar();
 });
+
