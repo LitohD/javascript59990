@@ -1,44 +1,76 @@
-*{
+body {
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.menu-bg{
-    background-color: rgb(0, 81, 255);
-}
-
-body {
-    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif; 
-}
-
-header nav div div ul{
-    font-size: 20px;
-    margin: 20px;
-}
-
-section h1{
+header {
+    background-color: #007bff;
+    color: #fff;
     text-align: center;
-    font-size: 50px;
-    margin: 30px;
-    color: blue;
+    padding: 10px 0;
 }
 
-section div{
-    width: 250px;
-    height: 200px;
-    border: 2px solid;
-    margin: 20px;
-    text-align: center;
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    padding: 30px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
     margin: auto;
 }
 
-section div h2{
-    font-size: 25px;
-    margin-top: 10px;
+input, button {
+    padding: 5px;
+    font-size: 20px;
 }
 
-section div button{
-    font-size: 20px;
-    margin: 40px;
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+
+.tarjetas-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 20px;
+    margin: 10px;
+}
+
+
+.card-container {
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #fff;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 300px;
+    margin: auto; 
+}
+
+.card-container img {
+    width: 200px;
+    height: auto;
 }

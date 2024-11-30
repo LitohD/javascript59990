@@ -45,21 +45,26 @@
     <main>
         <section>
             <h1>Pedí tu préstamo aquí!</h1>
-            <div>
-                <h2>Simular préstamo</h2>
-                <img src="" alt="">
-                <button>Simular</button>
-            </div>
+            <form id="solicitudForm">
+                <label for="nombreUsuario">Nombre:</label>
+                <input type="text" id="nombreUsuario" placeholder="Ingrese su nombre">
+                <label for="apellidoUsuario">Apellido</label>
+                <input type="text" id="apellidoUsuario" placeholder="Ingrese su apellido">
+                <label for="edadUsuario">Ingrese su edad:</label>
+                <input type="number" id="edadUsuario" placeholder="Ingrese su edad">
+                <label for="monto">Monto a solicitar</label>
+                <input type="number" id="monto">
+                <button type="submit">Mandar Datos</button>
+            </form>
         </section>
         <h2>¡Solicita tu tarjeta aquí!</h2>
-        <section id="prod-tarjetas">
+        <section id="prod-tarjetas" class="tarjetas-container">
 
         </section>
         <section>
             <h2>solicitados</h2>
             <ul id="solicitados"></ul>
             <p id="total"></p>
-            <!-- 234 -->
         </section>
     </main>
     <footer>
@@ -68,5 +73,3 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./javascript/index.js"></script>
 </body>
-
-</html>

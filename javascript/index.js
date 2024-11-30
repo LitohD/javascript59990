@@ -1,31 +1,5 @@
 
-// PIDIENDO DATOS PARA EL PRESTAMO 
-(async () => {
-    const { value: formValues } = await Swal.fire({
-        title: "Multiple inputs",
-        html: `
-        <input id="swal-input1" class="swal2-input">
-        <input id="swal-input2" class="swal2-input">
-    `,
-        focusConfirm: false,
-        preConfirm: () => {
-            return [
-                document.getElementById("swal-input1").value,
-                document.getElementById("swal-input2").value
-            ];
-        }
-    });
-    if (formValues) {
-        Swal.fire(JSON.stringify(formValues));
-    }
-})()
-
-// let habilitado = edad >= 18 ? 'Está habilitado a sacar un préstamo' : 'No está habilitado a sacar un préstamo';
-// console.log(habilitado)
-
-
-
-
+// Función para calcular el monto 
 function calcularMonto(monto) {
     return monto <= 10000
         ? monto + (monto * 0.30) // CALCULO DEL 30%
@@ -34,24 +8,71 @@ function calcularMonto(monto) {
             : monto + (monto * 0.10); // CALCULO DEL 10%
 }
 
+// Función para obtener el monto 
 function obtenerMontoUsuario() {
-    let monto = parseInt(prompt("Ingrese monto a pedir"));
+    const monto = parseInt(document.getElementById('monto').value);
     return monto;
 }
 
+// Función para verificar si el monto es válido
 function esMontoValido(monto) {
     return !isNaN(monto) && monto > 0;
 }
 
-function mostrarMensaje(mensaje) {
-    console.log(mensaje);
+// Función para verificar si la edad es válida
+function esEdadValida(edad) {
+    return !isNaN(edad) && edad >= 18;
 }
 
-let monto = obtenerMontoUsuario();
 
-esMontoValido(monto)
-    ? mostrarMensaje("El monto a pagar es de $" + calcularMonto(monto))
-    : mostrarMensaje("Por favor, ingrese un monto válido.");
+document.getElementById('solicitudForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const nombre = document.getElementById('nombreUsuario').value.trim();
+    const apellido = document.getElementById('apellidoUsuario').value.trim();
+    const edad = parseInt(document.getElementById('edadUsuario').value.trim());
+    const monto = obtenerMontoUsuario();
+
+    // Validando datos
+    if (nombre === "" || apellido === "" || isNaN(edad) || edad <= 0 || isNaN(monto) || monto <= 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Datos inválidos',
+            text: 'Por favor, complete todos los campos correctamente.',
+            confirmButtonText: 'Ok'
+        });
+    } else if (!esEdadValida(edad)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Edad inválida',
+            text: 'Debes tener al menos 18 años para solicitar un préstamo.',
+            confirmButtonText: 'Ok'
+        });
+    } else {
+        
+        const datosUsuario = {
+            nombre: nombre,
+            apellido: apellido,
+            edad: edad,
+            monto: monto
+        };
+        sessionStorage.setItem('datosUsuario', JSON.stringify(datosUsuario));
+
+        // Calcular el monto a pagar
+        const montoTotal = calcularMonto(monto);
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Datos enviados',
+            text: `Los datos se han enviado correctamente. El monto a pagar es de $${montoTotal.toFixed(2)}`,
+            confirmButtonText: 'Ok'
+        });
+
+        document.getElementById('solicitudForm').reset();
+    }
+});
+
+
 
 //PRESTAMOS FIJOS
 class Prestamo {
@@ -128,12 +149,14 @@ function mostrarTarjetas(tarjetas) {
         TARJETA_DIV.innerHTML = `
             <h3>${producto.nombre}</h3>
             <p>${producto.tipo}</p>
+            <img src="${producto.imagen}">
             <button onclick="solicitarTarjeta(${producto.id})">Solicitar</button>
         `;
         TARJETAS_SECTION.appendChild(TARJETA_DIV);
     });
 }
 
+// Función para solicitar tarjeta
 function solicitarTarjeta(id) {
     let SOLICITAR = JSON.parse(localStorage.getItem('solicitar')) || [];
     let tarjeta = JSON.parse(localStorage.getItem('TARJETAS')).find(prod => prod.id === id);
@@ -149,13 +172,7 @@ function solicitarTarjeta(id) {
     mostrarSolicitados();
 }
 
-function eliminarSeleccion(index) {
-    let SOLICITAR = JSON.parse(localStorage.getItem('solicitar')) || [];
-    SOLICITAR.splice(index, 1);
-    localStorage.setItem('solicitar', JSON.stringify(SOLICITAR));
-    mostrarSolicitados();
-}
-
+// Función para mostrar tarjetas
 function mostrarSolicitados() {
     let SOLICITAR = JSON.parse(localStorage.getItem('solicitar')) || [];
     const SOLICITADOS_LISTA = document.getElementById('solicitados');
@@ -173,7 +190,27 @@ function mostrarSolicitados() {
     document.getElementById('total').textContent = `Total: ${total}`;
 }
 
+// Función para eliminar selección
+function eliminarSeleccion(index) {
+    let SOLICITAR = JSON.parse(localStorage.getItem('solicitar')) || [];
+    SOLICITAR.splice(index, 1);
+    localStorage.setItem('solicitar', JSON.stringify(SOLICITAR));
+    mostrarSolicitados();
+}
+
+// Función para inicializar la carga y mostrar tarjetas
+async function inicializar() {
+    try {
+        const response = await fetch('datos.json');
+        const data = await response.json();
+        localStorage.setItem('TARJETAS', JSON.stringify(data));
+        mostrarTarjetas(data);
+        mostrarSolicitados();
+    } catch (error) {
+        console.error('Error al cargar el JSON:', error);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     inicializar();
 });
-
